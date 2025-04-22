@@ -40,39 +40,19 @@ public class DiagramPhysicalPrinter
                 _logger.LogInformation("Physical Printer Unavailable");
                 success = false;
             }
-            else if (_physicalPrinter.JobCount < 0)
+            else if (IsJobCountInconsistent())
             {
                 _logger.LogInformation("Physical Printer Unavailable Due to Job Count Inconsistency");
                 success = false;
             }
             else
             {
-                // Print the diagram using the Physical Printer
-                _printQueue.Add(data);
-                var summaryInformation = printableDiagram.SummaryInformation();
-                _logger.LogInformation("Diagram Summary Information {summaryInformation}", summaryInformation);
-                var isSummary = summaryInformation.Length > 10;
-                if (_physicalPrinter.StartDocument(!isSummary, false, "DiagramPhysicalPrinter"))
-                {
-                    if (printerDriver.PrintTo(_physicalPrinter))
-                    {
-                        _logger.LogInformation("Physical Printer Successfully printed");
-                        success = true;
-                    }
-
-                    _physicalPrinter.EndDocument();
-                }
+                success = PrintToPhysicalPrinter(printableDiagram, data, printerDriver);
             }
 
             if (success)
             {
-                // save a backup of the printed document as pdf
-                if (File.Exists(data.Filename))
-                {
-                    _logger.LogInformation("Saving backup of printed document as PDF to file {targetFilename}",
-                        targetFilename);
-                    printableDiagram.PrintToFile(data.Filename, targetFilename);
-                }
+                SaveBackUpPdf(printableDiagram, targetFilename, data);
             }
         }
         catch (Exception e)
@@ -87,5 +67,42 @@ public class DiagramPhysicalPrinter
         }
 
         return success;
+    }
+
+    private void SaveBackUpPdf(PrintableDiagram printableDiagram, string targetFilename, PrintMetadata data)
+    {
+        if (File.Exists(data.Filename))
+        {
+            _logger.LogInformation("Saving backup of printed document as PDF to file {targetFilename}",
+                targetFilename);
+            printableDiagram.PrintToFile(data.Filename, targetFilename);
+        }
+    }
+
+    private bool PrintToPhysicalPrinter(PrintableDiagram printableDiagram, PrintMetadata data,
+        DiagramPrintDriver printerDriver)
+    {
+        bool success = false;
+        _printQueue.Add(data);
+        var summaryInformation = printableDiagram.SummaryInformation();
+        _logger.LogInformation("Diagram Summary Information {summaryInformation}", summaryInformation);
+        var isSummary = summaryInformation.Length > 10;
+        if (_physicalPrinter.StartDocument(!isSummary, false, "DiagramPhysicalPrinter"))
+        {
+            if (printerDriver.PrintTo(_physicalPrinter))
+            {
+                _logger.LogInformation("Physical Printer Successfully printed");
+                success = true;
+            }
+
+            _physicalPrinter.EndDocument();
+        }
+
+        return success;
+    }
+
+    private bool IsJobCountInconsistent()
+    {
+        return _physicalPrinter.JobCount < 0;
     }
 }

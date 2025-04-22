@@ -40,26 +40,51 @@ public class DiagramPrinter
     public bool PrintDiagram(PrintableDiagram printableDiagram, string? folder, string? filename)
     {
         var info = printableDiagram.GetDiagramMetadata();
-        if (info.FileType == Pdf)
+        if (DiagramIsPdf(info))
         {
-            var targetFilename = GetTargetFilename(folder, filename);
-            _logger.LogInformation("Printing Pdf to file {targetFilename}", targetFilename);
-            var copySuccessful = printableDiagram.PrintToFile(info.FullFilename, targetFilename);
-            return copySuccessful;
+            return PrintPdf(printableDiagram, folder, filename, info);
         }
 
-        if (info.FileType == Spreadsheet)
+        if (DiagramIsSpreadsheet(info))
         {
-            var targetFilename = GetTargetFilename(folder, filename);
-            if (!targetFilename.EndsWith(".xls"))
-                targetFilename += ".xls";
-            _logger.LogInformation("Printing Excel to file {targetFilename}", targetFilename);
-            var copySuccessful = printableDiagram.PrintToFile(info.FullFilename, targetFilename);
-            return copySuccessful;
+            return PrintSpreadsheet(printableDiagram, folder, filename, info);
         }
-        // default case - print to a physical printer
+        return PrintToPhysicalPrinter(printableDiagram, folder, filename, info);
+    }
+
+    private static bool PrintToPhysicalPrinter(PrintableDiagram printableDiagram, string? folder, string? filename,
+        DiagramMetadata info)
+    {
         var diagramPhysicalPrinter = new DiagramPhysicalPrinter();
         return diagramPhysicalPrinter.DoPrint(printableDiagram, info, GetTargetFilename(folder, filename));
+    }
+
+    private bool PrintSpreadsheet(PrintableDiagram printableDiagram, string? folder, string? filename, DiagramMetadata info)
+    {
+        var targetFilename = GetTargetFilename(folder, filename);
+        if (!targetFilename.EndsWith(".xls"))
+            targetFilename += ".xls";
+        _logger.LogInformation("Printing Excel to file {targetFilename}", targetFilename);
+        var copySuccessful = printableDiagram.PrintToFile(info.FullFilename, targetFilename);
+        return copySuccessful;
+    }
+
+    private bool PrintPdf(PrintableDiagram printableDiagram, string? folder, string? filename, DiagramMetadata info)
+    {
+        var targetFilename = GetTargetFilename(folder, filename);
+        _logger.LogInformation("Printing Pdf to file {targetFilename}", targetFilename);
+        var copySuccessful = printableDiagram.PrintToFile(info.FullFilename, targetFilename);
+        return copySuccessful;
+    }
+
+    private static bool DiagramIsSpreadsheet(DiagramMetadata info)
+    {
+        return info.FileType == Spreadsheet;
+    }
+
+    private static bool DiagramIsPdf(DiagramMetadata info)
+    {
+        return info.FileType == Pdf;
     }
 
 
