@@ -34,18 +34,30 @@ class DiagramPrinter:
         info = printable_diagram.get_diagram_metadata()
         target_filename = self._get_target_filename(folder, filename)
 
-        if info.file_type == self.PDF:
-            self._logger.info(f"Printing PDF to file {target_filename}")
-            return printable_diagram.print_to_file(info.full_filename, target_filename)
+        if self.is_pdf(info):
+            return self.print_pdf(info, printable_diagram, target_filename)
 
-        if info.file_type == self.SPREADSHEET:
-            if not target_filename.endswith(".xls"):
-                target_filename += ".xls"
-            self._logger.info(f"Printing Excel to file {target_filename}")
-            return printable_diagram.print_to_file(info.full_filename, target_filename)
+        if self.is_spreadsheet(info):
+            return self.print_spreadsheet(info, printable_diagram, target_filename)
 
         diagram_physical_printer = DiagramPhysicalPrinter()
         return diagram_physical_printer.do_print(printable_diagram, info, target_filename)
+
+    def print_spreadsheet(self, info, printable_diagram, target_filename):
+        if not target_filename.endswith(".xls"):
+            target_filename += ".xls"
+        self._logger.info(f"Printing Excel to file {target_filename}")
+        return printable_diagram.print_to_file(info.full_filename, target_filename)
+
+    def is_spreadsheet(self, info):
+        return info.file_type == self.SPREADSHEET
+
+    def print_pdf(self, info, printable_diagram, target_filename):
+        self._logger.info(f"Printing PDF to file {target_filename}")
+        return printable_diagram.print_to_file(info.full_filename, target_filename)
+
+    def is_pdf(self, info):
+        return info.file_type == self.PDF
 
     @staticmethod
     def _get_target_filename(folder, filename):
@@ -70,23 +82,34 @@ class DiagramPhysicalPrinter:
         with mutex:
             if not self._physical_printer.is_available:
                 self._logger.info("Physical Printer Unavailable")
-            elif self._physical_printer.job_count < 0:
+            elif self.job_count_inconsistent():
                 self._logger.info("Physical Printer Unavailable Due to Job Count Inconsistency")
             else:
-                self._print_queue.add(data)
-                summary_information = printable_diagram.summary_information()
-                self._logger.info(f"Diagram Summary Information {summary_information}")
+                success = self.print_to_physical_printer(data, printable_diagram, printer_driver)
 
-                is_summary = len(summary_information) > 10
-                if self._physical_printer.start_document(not is_summary, False, "DiagramPhysicalPrinter"):
-                    if printer_driver.print_to(self._physical_printer):
-                        self._logger.info("Physical Printer Successfully printed")
-                        success = True
-                    self._physical_printer.end_document()
-
-                if success and os.path.exists(data.filename):
-                    self._logger.info(f"Saving backup of printed document as PDF to file {target_filename}")
-                    printable_diagram.print_to_file(data.filename, target_filename)
+                if success:
+                    self.save_backup_pdf(data, printable_diagram, target_filename)
 
         printer_driver.release_diagram()
         return success
+
+    def save_backup_pdf(self, data, printable_diagram, target_filename):
+        if os.path.exists(data.filename):
+            self._logger.info(f"Saving backup of printed document as PDF to file {target_filename}")
+            printable_diagram.print_to_file(data.filename, target_filename)
+
+    def print_to_physical_printer(self, data, printable_diagram, printer_driver):
+        success = False
+        self._print_queue.add(data)
+        summary_information = printable_diagram.summary_information()
+        self._logger.info(f"Diagram Summary Information {summary_information}")
+        is_summary = len(summary_information) > 10
+        if self._physical_printer.start_document(not is_summary, False, "DiagramPhysicalPrinter"):
+            if printer_driver.print_to(self._physical_printer):
+                self._logger.info("Physical Printer Successfully printed")
+                success = True
+            self._physical_printer.end_document()
+        return success
+
+    def job_count_inconsistent(self):
+        return self._physical_printer.job_count < 0
