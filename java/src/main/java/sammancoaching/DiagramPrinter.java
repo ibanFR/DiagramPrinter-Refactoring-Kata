@@ -35,21 +35,37 @@ public class DiagramPrinter {
 
     public static boolean printDiagram(PrintableDiagram printableDiagram, String folder, String filename) throws IOException {
         DiagramMetadata info = printableDiagram.getDiagramMetadata();
-        if (PDF.equals(info.fileType)) {
-            String targetFilename = getTargetFilename(folder, filename);
-            return printableDiagram.printToFile(info.fullFilename, targetFilename);
+        if (diagramIsPdf(info)) {
+            return printPdf(printableDiagram, folder, filename, info);
         }
 
-        if (SPREADSHEET.equals(info.fileType)) {
-            String targetFilename = getTargetFilename(folder, filename);
-            if (!targetFilename.endsWith(".xls")) {
-                targetFilename += ".xls";
-            }
-            return printableDiagram.printToFile(info.fullFilename, targetFilename);
+        if (diagramIsSpreadsheet(info)) {
+            return printSpreadsheet(printableDiagram, folder, filename, info);
         }
 
         // Default case - print to a physical printer
         return new DiagramPhysicalPrinter().doPrint(printableDiagram, info, getTargetFilename(folder, filename));
+    }
+
+    private static boolean printSpreadsheet(PrintableDiagram printableDiagram, String folder, String filename, DiagramMetadata info) {
+        String targetFilename = getTargetFilename(folder, filename);
+        if (!targetFilename.endsWith(".xls")) {
+            targetFilename += ".xls";
+        }
+        return printableDiagram.printToFile(info.fullFilename, targetFilename);
+    }
+
+    private static boolean printPdf(PrintableDiagram printableDiagram, String folder, String filename, DiagramMetadata info) {
+        String targetFilename = getTargetFilename(folder, filename);
+        return printableDiagram.printToFile(info.fullFilename, targetFilename);
+    }
+
+    private static boolean diagramIsSpreadsheet(DiagramMetadata info) {
+        return SPREADSHEET.equals(info.fileType);
+    }
+
+    private static boolean diagramIsPdf(DiagramMetadata info) {
+        return PDF.equals(info.fileType);
     }
 
     private static String getTargetFilename(String folder, String filename) {

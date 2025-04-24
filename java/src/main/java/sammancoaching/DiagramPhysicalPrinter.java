@@ -37,32 +37,14 @@ public class DiagramPhysicalPrinter {
 
             if (!physicalPrinter.isAvailable()) {
                 logger.info("Physical Printer Unavailable");
-            } else if (physicalPrinter.getJobCount() < 0) {
+            } else if (jobCountInconsistency()) {
                 logger.info("Physical Printer Unavailable Due to Job Count Inconsistency");
             } else {
-                // Print the diagram using the Physical Printer
-                printQueue.add(data);
-                String summaryInformation = diagram.getSummaryInformation();
-                logger.info("Diagram Summary Information: " + summaryInformation);
-                boolean isSummary = summaryInformation.length() > 10;
-
-                if (physicalPrinter.startDocument(!isSummary, false, "DiagramPhysicalPrinter")) {
-                    if (printerDriver.printTo(physicalPrinter)) {
-                        logger.info("Physical Printer Successfully printed");
-                        success = true;
-                    }
-
-                    physicalPrinter.endDocument();
-                }
+                success = printUsingPhysicalPrinter(diagram, data, printerDriver);
             }
 
             if (success) {
-                // Save a backup of the printed document as PDF
-                File file = data.getFile();
-                if (file.exists()) {
-                    logger.info("Saving backup of printed document as PDF to file " + targetFilename);
-                    diagram.printToFile(data.getFilename(), targetFilename);
-                }
+                saveBackupAsPdf(diagram, targetFilename, data);
             }
         } catch (Exception e) {
             logger.severe("Failed to print document: " + e.getMessage());
@@ -73,6 +55,36 @@ public class DiagramPhysicalPrinter {
         }
 
         return success;
+    }
+
+    private static void saveBackupAsPdf(PrintableDiagram diagram, String targetFilename, PrintMetadata data) {
+        File file = data.getFile();
+        if (file.exists()) {
+            logger.info("Saving backup of printed document as PDF to file " + targetFilename);
+            diagram.printToFile(data.getFilename(), targetFilename);
+        }
+    }
+
+    private boolean printUsingPhysicalPrinter(PrintableDiagram diagram, PrintMetadata data, DiagramPrintDriver printerDriver) {
+        boolean success = false;
+        printQueue.add(data);
+        String summaryInformation = diagram.getSummaryInformation();
+        logger.info("Diagram Summary Information: " + summaryInformation);
+        boolean isSummary = summaryInformation.length() > 10;
+
+        if (physicalPrinter.startDocument(!isSummary, false, "DiagramPhysicalPrinter")) {
+            if (printerDriver.printTo(physicalPrinter)) {
+                logger.info("Physical Printer Successfully printed");
+                success = true;
+            }
+
+            physicalPrinter.endDocument();
+        }
+        return success;
+    }
+
+    private boolean jobCountInconsistency() {
+        return physicalPrinter.getJobCount() < 0;
     }
 }
 
