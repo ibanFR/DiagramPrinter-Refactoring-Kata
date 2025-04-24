@@ -2,9 +2,11 @@ import os
 import threading
 import logging
 
-from documents import DiagramSummary, PrintableDiagram
-from printing import *
+from documents import DiagramSummary, FlowchartDiagram, PrintableDiagram
+from printing import PhysicalPrinter, PrintQueue, PrinterDriverFactory, PrintMetadata
 
+
+# This is a class you'd like to get under test so you can change it safely.
 class DiagramPrinter:
     SPREADSHEET = "Spreadsheet"
     PDF = "PDF"
@@ -23,14 +25,14 @@ class DiagramPrinter:
         summary_text = summary.export()
         return True, summary_text
 
-    def print_diagram(self, diagram, folder=None, filename=None):
+    def print_diagram(self, diagram: FlowchartDiagram, folder: str = None, filename: str = None):
         if diagram is None:
             return False
 
         printable_diagram = PrintableDiagram(diagram)
         return self._print_diagram(printable_diagram, folder, filename)
 
-    def _print_diagram(self, printable_diagram, folder, filename):
+    def _print_diagram(self, printable_diagram: PrintableDiagram, folder, filename):
         info = printable_diagram.get_diagram_metadata()
         target_filename = self._get_target_filename(folder, filename)
 
@@ -65,8 +67,10 @@ class DiagramPrinter:
         filename = filename or "tempfile.tmp"
         return os.path.join(folder, filename)
 
+
+# This is a class you'd like to get under test so you can change it safely.
 class DiagramPhysicalPrinter:
-    def __init__(self, physical_printer=None, print_queue=None):
+    def __init__(self, physical_printer: PhysicalPrinter = None, print_queue: PrintQueue = None):
         self._physical_printer = physical_printer or PhysicalPrinter()
         self._print_queue = print_queue or PrintQueue(self._physical_printer)
         self._logger = logging.getLogger("DiagramPhysicalPrinter")
