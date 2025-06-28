@@ -1,7 +1,12 @@
 package sammancoaching;
 
 public record DiagramWrapper(FlowchartDiagram diagram) {
-      public String getSerialNumber() {
+    public String getSummaryInformation() {
+        return diagram()
+                .getSummaryInformation();
+    }
+
+    public String getSerialNumber() {
         return diagram()
                 .getSerialNumber();
     }

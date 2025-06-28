@@ -25,15 +25,10 @@ public class DiagramPrinter {
     private static boolean printSummary(DiagramWrapper wrapper, String language, StringBuilder summaryText) {
         DiagramSummary summary = new DiagramSummary(language);
         summary.addTitle(wrapper.getName(), wrapper.getSerialNumber());
-        summary.addHeader(getSummaryInformation(wrapper));
+        summary.addHeader(wrapper.getSummaryInformation());
         summary.addImage(wrapper.diagram().getFlowchartThumbnail());
         summaryText.append(summary.export());
         return true;
-    }
-
-    private static String getSummaryInformation(DiagramWrapper wrapper) {
-        return wrapper.diagram()
-                .getSummaryInformation();
     }
 
     public boolean printDiagram(FlowchartDiagram diagram, String folder, String filename) throws IOException {
