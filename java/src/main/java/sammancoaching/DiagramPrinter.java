@@ -26,14 +26,9 @@ public class DiagramPrinter {
         DiagramSummary summary = new DiagramSummary(language);
         summary.addTitle(wrapper.getName(), wrapper.getSerialNumber());
         summary.addHeader(wrapper.getSummaryInformation());
-        summary.addImage(getFlowchartThumbnail(wrapper));
+        summary.addImage(wrapper.getFlowchartThumbnail());
         summaryText.append(summary.export());
         return true;
-    }
-
-    private static PngDocument getFlowchartThumbnail(DiagramWrapper wrapper) {
-        return wrapper.diagram()
-                .getFlowchartThumbnail();
     }
 
     public boolean printDiagram(FlowchartDiagram diagram, String folder, String filename) throws IOException {
