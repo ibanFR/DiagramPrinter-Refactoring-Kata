@@ -38,10 +38,11 @@ public class DiagramPrinter {
 
         DiagramWrapper wrapper = new DiagramWrapper(diagram);
 
-        DiagramMetadata info = new DiagramMetadata(diagram);
+        DiagramMetadata info = new DiagramMetadata(wrapper.diagram());
+
         if (PDF.equals(info.fileType)) {
             String targetFilename = getTargetFilename(folder, filename);
-            return diagram.getFlowchartAsPdf().copyFile(info.fullFilename, targetFilename, true);
+            return wrapper.diagram().getFlowchartAsPdf().copyFile(info.fullFilename, targetFilename, true);
         }
 
         if (SPREADSHEET.equals(info.fileType)) {
@@ -49,11 +50,11 @@ public class DiagramPrinter {
             if (!targetFilename.endsWith(".xls")) {
                 targetFilename += ".xls";
             }
-            return diagram.getFlowchartDataAsSpreadsheet().copyFile(info.fullFilename, targetFilename, true);
+            return wrapper.diagram().getFlowchartDataAsSpreadsheet().copyFile(info.fullFilename, targetFilename, true);
         }
 
         // Default case - print to a physical printer
-        return new DiagramPhysicalPrinter().doPrint(diagram, info, getTargetFilename(folder, filename));
+        return new DiagramPhysicalPrinter().doPrint(wrapper.diagram(), info, getTargetFilename(folder, filename));
     }
 
     private static String getTargetFilename(String folder, String filename) {
