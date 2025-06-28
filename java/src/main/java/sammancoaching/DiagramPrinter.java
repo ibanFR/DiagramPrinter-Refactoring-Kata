@@ -22,7 +22,7 @@ public class DiagramPrinter {
         return printSummary(printableDiagram, language, summaryText);
     }
 
-    private static boolean printSummary(PrintableDiagram aPrintableDiagram, String language, StringBuilder summaryText) {
+    public boolean printSummary(PrintableDiagram aPrintableDiagram, String language, StringBuilder summaryText) {
         DiagramSummary summary = new DiagramSummary(language);
         summary.addTitle(aPrintableDiagram.getName(), aPrintableDiagram.getSerialNumber());
         summary.addHeader(aPrintableDiagram.getSummaryInformation());
