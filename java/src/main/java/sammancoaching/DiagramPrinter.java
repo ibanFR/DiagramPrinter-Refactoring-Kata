@@ -21,9 +21,9 @@ public class DiagramPrinter {
         }
 
         DiagramSummary summary = new DiagramSummary(language);
-        summary.addTitle(diagram.getName(), diagram.getSerialNumber());
-        summary.addHeader(diagram.getSummaryInformation());
-        summary.addImage(diagram.getFlowchartThumbnail());
+        summary.addTitle(wrapper.diagram().getName(), wrapper.diagram().getSerialNumber());
+        summary.addHeader(wrapper.diagram().getSummaryInformation());
+        summary.addImage(wrapper.diagram().getFlowchartThumbnail());
         summaryText.append(summary.export());
         return true;
     }
