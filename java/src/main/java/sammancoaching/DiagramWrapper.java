@@ -1,7 +1,4 @@
 package sammancoaching;
 
-public class DiagramWrapper {
-    public DiagramWrapper(FlowchartDiagram diagram) {
-
-    }
+public record DiagramWrapper(FlowchartDiagram diagram) {
 }
