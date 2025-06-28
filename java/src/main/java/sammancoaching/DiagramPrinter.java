@@ -36,6 +36,8 @@ public class DiagramPrinter {
             return false;
         }
 
+        DiagramWrapper wrapper = new DiagramWrapper(diagram);
+
         DiagramMetadata info = new DiagramMetadata(diagram);
         if (PDF.equals(info.fileType)) {
             String targetFilename = getTargetFilename(folder, filename);
