@@ -12,7 +12,7 @@ public class DiagramPrinter {
 
     public boolean printSummary(FlowchartDiagram diagram, String language, StringBuilder summaryText) {
 
-        DiagramWrapper wrapper = new DiagramWrapper(diagram);
+        PrintableDiagram wrapper = new DiagramWrapper(diagram);
 
         if (diagram == null) {
             summaryText.setLength(0); // Clear text
@@ -22,7 +22,7 @@ public class DiagramPrinter {
         return printSummary(wrapper, language, summaryText);
     }
 
-    private static boolean printSummary(DiagramWrapper wrapper, String language, StringBuilder summaryText) {
+    private static boolean printSummary(PrintableDiagram wrapper, String language, StringBuilder summaryText) {
         DiagramSummary summary = new DiagramSummary(language);
         summary.addTitle(wrapper.getName(), wrapper.getSerialNumber());
         summary.addHeader(wrapper.getSummaryInformation());
