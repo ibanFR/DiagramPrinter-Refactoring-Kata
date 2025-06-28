@@ -12,6 +12,9 @@ public class DiagramPrinter {
     public static final String PDF = "PDF";
 
     public boolean printSummary(FlowchartDiagram diagram, String language, StringBuilder summaryText) {
+
+        DiagramWrapper wrapper = new DiagramWrapper(diagram);
+
         if (diagram == null) {
             summaryText.setLength(0); // Clear text
             return false;
