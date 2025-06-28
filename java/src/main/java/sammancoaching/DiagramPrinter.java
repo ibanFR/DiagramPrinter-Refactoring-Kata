@@ -12,21 +12,21 @@ public class DiagramPrinter {
 
     public boolean printSummary(FlowchartDiagram diagram, String language, StringBuilder summaryText) {
 
-        PrintableDiagram wrapper = new DiagramWrapper(diagram);
+        PrintableDiagram printableDiagram = new DiagramWrapper(diagram);
 
         if (diagram == null) {
             summaryText.setLength(0); // Clear text
             return false;
         }
 
-        return printSummary(wrapper, language, summaryText);
+        return printSummary(printableDiagram, language, summaryText);
     }
 
-    private static boolean printSummary(PrintableDiagram wrapper, String language, StringBuilder summaryText) {
+    private static boolean printSummary(PrintableDiagram aPrintableDiagram, String language, StringBuilder summaryText) {
         DiagramSummary summary = new DiagramSummary(language);
-        summary.addTitle(wrapper.getName(), wrapper.getSerialNumber());
-        summary.addHeader(wrapper.getSummaryInformation());
-        summary.addImage(wrapper.getFlowchartThumbnail());
+        summary.addTitle(aPrintableDiagram.getName(), aPrintableDiagram.getSerialNumber());
+        summary.addHeader(aPrintableDiagram.getSummaryInformation());
+        summary.addImage(aPrintableDiagram.getFlowchartThumbnail());
         summaryText.append(summary.export());
         return true;
     }
