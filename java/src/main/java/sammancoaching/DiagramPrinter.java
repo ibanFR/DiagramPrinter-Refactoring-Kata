@@ -1,7 +1,6 @@
 package sammancoaching;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -20,6 +19,10 @@ public class DiagramPrinter {
             return false;
         }
 
+        return printSummary(wrapper, language, summaryText);
+    }
+
+    private static boolean printSummary(DiagramWrapper wrapper, String language, StringBuilder summaryText) {
         DiagramSummary summary = new DiagramSummary(language);
         summary.addTitle(wrapper.diagram().getName(), wrapper.diagram().getSerialNumber());
         summary.addHeader(wrapper.diagram().getSummaryInformation());
