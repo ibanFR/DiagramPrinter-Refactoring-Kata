@@ -5,10 +5,10 @@ public class DiagramMetadata {
     protected String fileType;
     protected boolean fileAvailable;
 
-    public DiagramMetadata(DiagramWrapper aDiagramWrapper) {
-        this.fullFilename = aDiagramWrapper.getName() + "_" + aDiagramWrapper.getSerialNumber();
-        this.fileType = aDiagramWrapper.getName().contains("Flowchart") ? "PDF" : "Spreadsheet";
-        this.fileAvailable = !aDiagramWrapper.isDisposed();
+    public DiagramMetadata(PrintableDiagram aPrintableDiagram) {
+        this.fullFilename = aPrintableDiagram.getName() + "_" + aPrintableDiagram.getSerialNumber();
+        this.fileType = aPrintableDiagram.getName().contains("Flowchart") ? "PDF" : "Spreadsheet";
+        this.fileAvailable = !aPrintableDiagram.isDisposed();
     }
 
     protected DiagramMetadata() {
