@@ -59,11 +59,6 @@ class DiagramPrinterTest {
         }
 
         @Override
-        public SpreadsheetDocument getFlowchartDataAsSpreadsheet() {
-            return null;
-        }
-
-        @Override
         public boolean isDisposed() {
             return false;
         }

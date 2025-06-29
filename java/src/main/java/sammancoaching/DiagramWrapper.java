@@ -7,8 +7,7 @@ public record DiagramWrapper(FlowchartDiagram diagram) implements PrintableDiagr
         return diagram();
     }
 
-    @Override
-    public SpreadsheetDocument getFlowchartDataAsSpreadsheet() {
+    private SpreadsheetDocument getFlowchartDataAsSpreadsheet() {
         return diagram()
                 .getFlowchartDataAsSpreadsheet();
     }
