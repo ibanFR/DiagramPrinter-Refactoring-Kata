@@ -5,7 +5,7 @@ public class DiagramMetadata {
     protected String fileType;
     protected boolean fileAvailable;
 
-    public DiagramMetadata(DiagramWrapper aDiagramWrapper, FlowchartDiagram diagram) {
+    public DiagramMetadata(DiagramWrapper aDiagramWrapper) {
         this.fullFilename = aDiagramWrapper.getName() + "_" + aDiagramWrapper.getSerialNumber();
         this.fileType = aDiagramWrapper.getName().contains("Flowchart") ? "PDF" : "Spreadsheet";
         this.fileAvailable = !aDiagramWrapper.isDisposed();

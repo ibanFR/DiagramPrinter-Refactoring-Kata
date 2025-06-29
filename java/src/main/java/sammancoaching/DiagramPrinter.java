@@ -43,7 +43,7 @@ public class DiagramPrinter {
 
     private static boolean printDiagram(DiagramWrapper wrapper, String folder, String filename) throws IOException {
 
-        DiagramMetadata info = new DiagramMetadata(wrapper, wrapper.diagram());
+        DiagramMetadata info = new DiagramMetadata(wrapper);
 
         if (PDF.equals(info.fileType)) {
             String targetFilename = getTargetFilename(folder, filename);
