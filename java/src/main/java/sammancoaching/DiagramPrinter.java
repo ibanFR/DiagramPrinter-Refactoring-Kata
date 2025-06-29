@@ -38,11 +38,12 @@ public class DiagramPrinter {
 
         DiagramWrapper wrapper = new DiagramWrapper(diagram);
 
-        return printDiagram(folder, filename, wrapper);
+        return printDiagram(wrapper, folder, filename);
     }
 
-    private static boolean printDiagram(String folder, String filename, DiagramWrapper wrapper) throws IOException {
-        DiagramMetadata info = new DiagramMetadata(wrapper.diagram());
+    private static boolean printDiagram(DiagramWrapper wrapper, String folder, String filename) throws IOException {
+
+        DiagramMetadata info = new DiagramMetadata(wrapper, wrapper.diagram());
 
         if (PDF.equals(info.fileType)) {
             String targetFilename = getTargetFilename(folder, filename);
