@@ -45,8 +45,7 @@ public class DiagramPrinter {
 
         if (PDF.equals(info.fileType)) {
             String targetFilename = getTargetFilename(folder, filename);
-            String fullFilename = info.fullFilename;
-            return aPrintableDiagram.printPdf(fullFilename, targetFilename);
+            return aPrintableDiagram.printPdf(info.fullFilename, targetFilename);
         }
 
         if (SPREADSHEET.equals(info.fileType)) {
