@@ -37,6 +37,11 @@ class DiagramPrinterTest {
 
     private record FakeDiagram() implements PrintableDiagram {
         @Override
+        public boolean isDisposed() {
+            return false;
+        }
+
+        @Override
         public PngDocument getFlowchartThumbnail() {
             return new PngDocument("fake-thumbnail.png");
         }
