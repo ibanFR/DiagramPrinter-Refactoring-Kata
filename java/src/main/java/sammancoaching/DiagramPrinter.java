@@ -65,7 +65,7 @@ public class DiagramPrinter {
     }
 
     private static boolean printToPhysicalPrinter(DiagramWrapper aDiagramWrapper, String folder, String filename, DiagramMetadata info) throws IOException {
-        return new DiagramPhysicalPrinter().doPrint(aDiagramWrapper.diagram(),
+        return new DiagramPhysicalPrinter().doPrint(aDiagramWrapper.getDiagram(),
                                                     info,
                                                     getTargetFilename(folder, filename));
     }

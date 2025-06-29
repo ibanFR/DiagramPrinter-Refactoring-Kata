@@ -1,6 +1,11 @@
 package sammancoaching;
 
 public record DiagramWrapper(FlowchartDiagram diagram) implements PrintableDiagram {
+
+    public FlowchartDiagram getDiagram() {
+        return diagram();
+    }
+
     @Override
     public SpreadsheetDocument getFlowchartDataAsSpreadsheet() {
         return diagram()
