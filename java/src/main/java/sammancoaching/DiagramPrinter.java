@@ -39,7 +39,7 @@ public class DiagramPrinter {
         return printDiagram(new DiagramWrapper(diagram), folder, filename);
     }
 
-    private static boolean printDiagram(PrintableDiagram aPrintableDiagram, String folder, String filename) throws IOException {
+    public static boolean printDiagram(PrintableDiagram aPrintableDiagram, String folder, String filename) throws IOException {
 
         DiagramMetadata info = new DiagramMetadata(aPrintableDiagram);
 

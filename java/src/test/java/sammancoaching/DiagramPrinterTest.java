@@ -1,5 +1,6 @@
 package sammancoaching;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -30,8 +31,18 @@ class DiagramPrinterTest {
     @Test
     void printingEmptyDocumentFails() throws IOException {
         DiagramPrinter printer = new DiagramPrinter();
-        boolean result = printer.printDiagram(null, null, null);
+        FlowchartDiagram diagram = null;
+        boolean result = printer.printDiagram(diagram, null, null);
         assertFalse(result);
+    }
+
+    @Test
+    @Disabled("can't construct an instnace of a PDF document")
+    void shouldPrintPDFDiagram() throws IOException {
+        DiagramPrinter printer = new DiagramPrinter();
+        PrintableDiagram diagram = new FakeDiagram();
+        boolean result = printer.printDiagram(diagram, "some/folder", "diagram.pdf");
+        assertTrue(result);
     }
 
 
@@ -73,7 +84,7 @@ class DiagramPrinterTest {
 
         @Override
         public String getName() {
-            return "";
+            return "FlowchartDiagram";
         }
     }
 }

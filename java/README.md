@@ -16,3 +16,10 @@ The `FlowchartDiagram` can't be instantiated directly.
 ## Solution
 Use Adapt parameter pattern to safe-refactor the DiagramPrinter class until it is possible to create unit tests for the required code.
 
+## Refactoring printDiagram method
+
+Apply similar steps to refactor the `printDiagram` method in the `DiagramPrinter` class.
+
+## Challenge
+Can't construct an instance of PDFDocument directly.
+
