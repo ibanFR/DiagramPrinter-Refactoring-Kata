@@ -1,10 +1,6 @@
 package sammancoaching;
 
 public interface PrintableDiagram {
-    default boolean printPdf(String fullFilename, String targetFilename) {
-        return getFlowchartAsPdf()
-                .copyFile(fullFilename, targetFilename, true);
-    }
 
     FlowchartDiagram getDiagram();
 
@@ -21,4 +17,6 @@ public interface PrintableDiagram {
     String getSerialNumber();
 
     String getName();
+
+    boolean printPdf(String fullFilename, String targetFilename);
 }

@@ -1,6 +1,5 @@
 package sammancoaching;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -37,7 +36,6 @@ class DiagramPrinterTest {
     }
 
     @Test
-    @Disabled("can't construct an instance of a PDF document")
     void shouldPrintPDFDiagram() throws IOException {
         DiagramPrinter printer = new DiagramPrinter();
         PrintableDiagram diagram = new FakeDiagram();
@@ -85,6 +83,10 @@ class DiagramPrinterTest {
         @Override
         public String getName() {
             return "FlowchartDiagram";
+        }
+
+        public boolean printPdf(String fullFilename, String targetFilename) {
+            return true;
         }
     }
 }
