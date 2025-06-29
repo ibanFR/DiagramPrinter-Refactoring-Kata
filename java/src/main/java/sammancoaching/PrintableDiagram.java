@@ -1,6 +1,8 @@
 package sammancoaching;
 
 public interface PrintableDiagram {
+    FlowchartDiagram getDiagram();
+
     SpreadsheetDocument getFlowchartDataAsSpreadsheet();
 
     PdfDocument getFlowchartAsPdf();

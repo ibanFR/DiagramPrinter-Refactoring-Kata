@@ -2,6 +2,7 @@ package sammancoaching;
 
 public record DiagramWrapper(FlowchartDiagram diagram) implements PrintableDiagram {
 
+    @Override
     public FlowchartDiagram getDiagram() {
         return diagram();
     }
