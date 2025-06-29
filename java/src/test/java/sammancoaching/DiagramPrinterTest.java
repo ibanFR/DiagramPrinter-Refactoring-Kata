@@ -37,7 +37,7 @@ class DiagramPrinterTest {
     }
 
     @Test
-    @Disabled("can't construct an instnace of a PDF document")
+    @Disabled("can't construct an instance of a PDF document")
     void shouldPrintPDFDiagram() throws IOException {
         DiagramPrinter printer = new DiagramPrinter();
         PrintableDiagram diagram = new FakeDiagram();
