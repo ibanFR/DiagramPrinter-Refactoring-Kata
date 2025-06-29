@@ -1,7 +1,7 @@
 package sammancoaching;
 
 public record DiagramWrapper(FlowchartDiagram diagram) implements PrintableDiagram {
-    boolean isDisposed() {
+     public boolean isDisposed() {
         return diagram()
                 .isDisposed();
     }
