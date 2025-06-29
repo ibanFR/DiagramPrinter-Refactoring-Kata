@@ -54,16 +54,11 @@ public class DiagramPrinter {
                 targetFilename += ".xls";
             }
             String fullFilename = info.fullFilename;
-            return printSpreadsheet(aPrintableDiagram, fullFilename, targetFilename);
+            return aPrintableDiagram.printSpreadsheet(fullFilename, targetFilename);
         }
 
         // Default case - print to a physical printer
         return printToPhysicalPrinter(aPrintableDiagram, folder, filename, info);
-    }
-
-    private static boolean printSpreadsheet(PrintableDiagram aPrintableDiagram, String fullFilename, String targetFilename) {
-        return aPrintableDiagram.getFlowchartDataAsSpreadsheet()
-                .copyFile(fullFilename, targetFilename, true);
     }
 
     private static boolean printToPhysicalPrinter(PrintableDiagram aPrintableDiagram, String folder, String filename, DiagramMetadata info) throws IOException {
