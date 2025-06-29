@@ -8,7 +8,11 @@ public class DiagramMetadata {
     public DiagramMetadata(DiagramWrapper aDiagramWrapper, FlowchartDiagram diagram) {
         this.fullFilename = aDiagramWrapper.getName() + "_" + aDiagramWrapper.getSerialNumber();
         this.fileType = aDiagramWrapper.getName().contains("Flowchart") ? "PDF" : "Spreadsheet";
-        this.fileAvailable = !diagram.isDisposed();
+        this.fileAvailable = !isDisposed(diagram);
+    }
+
+    private static boolean isDisposed(FlowchartDiagram diagram) {
+        return diagram.isDisposed();
     }
 
     protected DiagramMetadata() {
