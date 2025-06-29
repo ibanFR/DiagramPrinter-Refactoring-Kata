@@ -7,11 +7,6 @@ public record DiagramWrapper(FlowchartDiagram diagram) implements PrintableDiagr
         return diagram();
     }
 
-    private SpreadsheetDocument getFlowchartDataAsSpreadsheet() {
-        return diagram()
-                .getFlowchartDataAsSpreadsheet();
-    }
-
     @Override
     public boolean isDisposed() {
         return diagram()
@@ -51,7 +46,8 @@ public record DiagramWrapper(FlowchartDiagram diagram) implements PrintableDiagr
 
     @Override
     public boolean printSpreadsheet(String fullFilename, String targetFilename) {
-        return getFlowchartDataAsSpreadsheet()
+        return this.diagram()
+                .getFlowchartDataAsSpreadsheet()
                 .copyFile(fullFilename, targetFilename, true);
     }
 }
