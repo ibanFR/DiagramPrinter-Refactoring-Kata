@@ -56,11 +56,6 @@ class DiagramPrinterTest {
         }
 
         @Override
-        public PdfDocument getFlowchartAsPdf() {
-            return null;
-        }
-
-        @Override
         public boolean isDisposed() {
             return false;
         }

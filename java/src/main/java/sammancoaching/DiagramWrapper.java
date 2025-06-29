@@ -13,8 +13,7 @@ public record DiagramWrapper(FlowchartDiagram diagram) implements PrintableDiagr
                 .getFlowchartDataAsSpreadsheet();
     }
 
-    @Override
-    public PdfDocument getFlowchartAsPdf() {
+    private PdfDocument getFlowchartAsPdf() {
         return diagram()
                 .getFlowchartAsPdf();
     }

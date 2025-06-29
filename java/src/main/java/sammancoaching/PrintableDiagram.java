@@ -6,8 +6,6 @@ public interface PrintableDiagram {
 
     SpreadsheetDocument getFlowchartDataAsSpreadsheet();
 
-    PdfDocument getFlowchartAsPdf();
-
     boolean isDisposed();
 
     PngDocument getFlowchartThumbnail();
