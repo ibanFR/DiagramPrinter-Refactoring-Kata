@@ -56,13 +56,17 @@ public class DiagramPrinter {
             if (!targetFilename.endsWith(".xls")) {
                 targetFilename += ".xls";
             }
-            return aDiagramWrapper.diagram()
-                    .getFlowchartDataAsSpreadsheet()
+            return getFlowchartDataAsSpreadsheet(aDiagramWrapper)
                     .copyFile(info.fullFilename, targetFilename, true);
         }
 
         // Default case - print to a physical printer
         return new DiagramPhysicalPrinter().doPrint(aDiagramWrapper.diagram(), info, getTargetFilename(folder, filename));
+    }
+
+    private static SpreadsheetDocument getFlowchartDataAsSpreadsheet(DiagramWrapper aDiagramWrapper) {
+        return aDiagramWrapper.diagram()
+                .getFlowchartDataAsSpreadsheet();
     }
 
     private static String getTargetFilename(String folder, String filename) {
