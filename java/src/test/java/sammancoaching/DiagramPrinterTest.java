@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class DiagramPrinterTest {
 
@@ -23,7 +22,7 @@ class DiagramPrinterTest {
     void shouldPrintSummaryForValidDiagram(){
         DiagramPrinter printer = new DiagramPrinter();
         StringBuilder output = new StringBuilder();
-        PrintableDiagram diagram = new FakeDiagram("name");
+        PrintableDiagram diagram = new FakeDiagram("name", "SN001", new StringBuilder());
         boolean result = printer.printSummary(diagram, "swedish", output);
         assertTrue(result);
     }
@@ -38,20 +37,22 @@ class DiagramPrinterTest {
 
     @Test
     void shouldPrintPDFDiagram() throws IOException {
-        PrintableDiagram diagram = new FakeDiagram("Flowchart");
+        StringBuilder spy = new StringBuilder();
+        PrintableDiagram diagram = new FakeDiagram("Flowchart","SN001",spy);
         boolean result = DiagramPrinter.printDiagram(diagram, "some/folder", "diagram.pdf");
         assertTrue(result);
+        assertEquals("printing Flowchart_SN001", spy.toString());
     }
     @Test
     @Disabled("can't construct SpreadsheetDocument in test")
     void shouldPrintSpreadsheetDiagram() throws IOException {
-        PrintableDiagram diagram = new FakeDiagram("Spreadsheet");
+        PrintableDiagram diagram = new FakeDiagram("Spreadsheet", "SN002", new StringBuilder());
         boolean result = DiagramPrinter.printDiagram(diagram, "some/folder", "diagram.xls");
         assertTrue(result);
     }
 
 
-    private record FakeDiagram(String name) implements PrintableDiagram {
+    private record FakeDiagram(String name, String serialNumber, StringBuilder spy) implements PrintableDiagram {
         @Override
         public FlowchartDiagram getDiagram() {
             return null;
@@ -79,7 +80,7 @@ class DiagramPrinterTest {
 
         @Override
         public String getSerialNumber() {
-            return "";
+            return serialNumber;
         }
 
         @Override
@@ -88,6 +89,7 @@ class DiagramPrinterTest {
         }
 
         public boolean printPdf(String fullFilename, String targetFilename) {
+            spy.append("printing ").append(fullFilename);
             return true;
         }
     }
