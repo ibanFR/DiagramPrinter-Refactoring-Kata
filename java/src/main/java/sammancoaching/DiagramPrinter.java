@@ -47,8 +47,7 @@ public class DiagramPrinter {
 
         if (PDF.equals(info.fileType)) {
             String targetFilename = getTargetFilename(folder, filename);
-            return aDiagramWrapper.diagram()
-                    .getFlowchartAsPdf()
+            return getFlowchartAsPdf(aDiagramWrapper)
                     .copyFile(info.fullFilename, targetFilename, true);
         }
 
@@ -64,6 +63,11 @@ public class DiagramPrinter {
 
         // Default case - print to a physical printer
         return new DiagramPhysicalPrinter().doPrint(aDiagramWrapper.diagram(), info, getTargetFilename(folder, filename));
+    }
+
+    private static PdfDocument getFlowchartAsPdf(DiagramWrapper aDiagramWrapper) {
+        return aDiagramWrapper.diagram()
+                .getFlowchartAsPdf();
     }
 
     private static String getTargetFilename(String folder, String filename) {
