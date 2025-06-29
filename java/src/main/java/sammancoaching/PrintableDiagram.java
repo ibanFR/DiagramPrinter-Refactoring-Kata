@@ -1,6 +1,8 @@
 package sammancoaching;
 
 public interface PrintableDiagram {
+    PdfDocument getFlowchartAsPdf();
+
     boolean isDisposed();
 
     PngDocument getFlowchartThumbnail();
