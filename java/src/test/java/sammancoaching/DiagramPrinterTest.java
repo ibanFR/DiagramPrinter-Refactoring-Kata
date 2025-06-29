@@ -37,6 +37,11 @@ class DiagramPrinterTest {
 
     private record FakeDiagram() implements PrintableDiagram {
         @Override
+        public FlowchartDiagram getDiagram() {
+            return null;
+        }
+
+        @Override
         public SpreadsheetDocument getFlowchartDataAsSpreadsheet() {
             return null;
         }
