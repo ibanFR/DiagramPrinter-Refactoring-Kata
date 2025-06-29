@@ -61,7 +61,13 @@ public class DiagramPrinter {
         }
 
         // Default case - print to a physical printer
-        return new DiagramPhysicalPrinter().doPrint(aDiagramWrapper.diagram(), info, getTargetFilename(folder, filename));
+        return printToPhysicalPrinter(aDiagramWrapper, folder, filename, info);
+    }
+
+    private static boolean printToPhysicalPrinter(DiagramWrapper aDiagramWrapper, String folder, String filename, DiagramMetadata info) throws IOException {
+        return new DiagramPhysicalPrinter().doPrint(aDiagramWrapper.diagram(),
+                                                    info,
+                                                    getTargetFilename(folder, filename));
     }
 
     private static String getTargetFilename(String folder, String filename) {
