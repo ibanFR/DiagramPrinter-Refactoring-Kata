@@ -2,6 +2,11 @@ package sammancoaching;
 
 public interface PrintableDiagram {
 
+    default boolean printSpreadsheet(String fullFilename, String targetFilename) {
+        return getFlowchartDataAsSpreadsheet()
+                .copyFile(fullFilename, targetFilename, true);
+    }
+
     FlowchartDiagram getDiagram();
 
     SpreadsheetDocument getFlowchartDataAsSpreadsheet();
