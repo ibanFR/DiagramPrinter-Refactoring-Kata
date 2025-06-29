@@ -45,8 +45,9 @@ public class DiagramPrinter {
 
         if (PDF.equals(info.fileType)) {
             String targetFilename = getTargetFilename(folder, filename);
+            String fullFilename = info.fullFilename;
             return aPrintableDiagram.getFlowchartAsPdf()
-                    .copyFile(info.fullFilename, targetFilename, true);
+                    .copyFile(fullFilename, targetFilename, true);
         }
 
         if (SPREADSHEET.equals(info.fileType)) {
