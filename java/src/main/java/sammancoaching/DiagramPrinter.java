@@ -36,18 +36,18 @@ public class DiagramPrinter {
             return false;
         }
 
-        DiagramWrapper wrapper = new DiagramWrapper(diagram);
+        PrintableDiagram wrapper = new DiagramWrapper(diagram);
 
         return printDiagram(wrapper, folder, filename);
     }
 
-    private static boolean printDiagram(DiagramWrapper aDiagramWrapper, String folder, String filename) throws IOException {
+    private static boolean printDiagram(PrintableDiagram aPrintableDiagram, String folder, String filename) throws IOException {
 
-        DiagramMetadata info = new DiagramMetadata(aDiagramWrapper);
+        DiagramMetadata info = new DiagramMetadata(aPrintableDiagram);
 
         if (PDF.equals(info.fileType)) {
             String targetFilename = getTargetFilename(folder, filename);
-            return aDiagramWrapper.getFlowchartAsPdf()
+            return aPrintableDiagram.getFlowchartAsPdf()
                     .copyFile(info.fullFilename, targetFilename, true);
         }
 
@@ -56,16 +56,16 @@ public class DiagramPrinter {
             if (!targetFilename.endsWith(".xls")) {
                 targetFilename += ".xls";
             }
-            return aDiagramWrapper.getFlowchartDataAsSpreadsheet()
+            return aPrintableDiagram.getFlowchartDataAsSpreadsheet()
                     .copyFile(info.fullFilename, targetFilename, true);
         }
 
         // Default case - print to a physical printer
-        return printToPhysicalPrinter(aDiagramWrapper, folder, filename, info);
+        return printToPhysicalPrinter(aPrintableDiagram, folder, filename, info);
     }
 
-    private static boolean printToPhysicalPrinter(DiagramWrapper aDiagramWrapper, String folder, String filename, DiagramMetadata info) throws IOException {
-        return new DiagramPhysicalPrinter().doPrint(aDiagramWrapper.getDiagram(),
+    private static boolean printToPhysicalPrinter(PrintableDiagram aPrintableDiagram, String folder, String filename, DiagramMetadata info) throws IOException {
+        return new DiagramPhysicalPrinter().doPrint(aPrintableDiagram.getDiagram(),
                                                     info,
                                                     getTargetFilename(folder, filename));
     }
