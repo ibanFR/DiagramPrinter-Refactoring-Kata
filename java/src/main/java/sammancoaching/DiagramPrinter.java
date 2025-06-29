@@ -36,9 +36,9 @@ public class DiagramPrinter {
             return false;
         }
 
-        PrintableDiagram wrapper = new DiagramWrapper(diagram);
+        PrintableDiagram printableDiagram = new DiagramWrapper(diagram);
 
-        return printDiagram(wrapper, folder, filename);
+        return printDiagram(printableDiagram, folder, filename);
     }
 
     private static boolean printDiagram(PrintableDiagram aPrintableDiagram, String folder, String filename) throws IOException {
