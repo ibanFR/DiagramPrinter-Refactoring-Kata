@@ -49,4 +49,10 @@ public record DiagramWrapper(FlowchartDiagram diagram) implements PrintableDiagr
                 .getFlowchartAsPdf()
                 .copyFile(fullFilename, targetFilename, true);
     }
+
+    @Override
+    public boolean printSpreadsheet(String fullFilename, String targetFilename) {
+        return getFlowchartDataAsSpreadsheet()
+                .copyFile(fullFilename, targetFilename, true);
+    }
 }

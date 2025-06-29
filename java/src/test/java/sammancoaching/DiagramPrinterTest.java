@@ -1,6 +1,5 @@
 package sammancoaching;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -41,14 +40,15 @@ class DiagramPrinterTest {
         PrintableDiagram diagram = new FakeDiagram("Flowchart","SN001",spy);
         boolean result = DiagramPrinter.printDiagram(diagram, "some/folder", "diagram.pdf");
         assertTrue(result);
-        assertEquals("printing Flowchart_SN001", spy.toString());
+        assertEquals("printing pdf Flowchart_SN001", spy.toString());
     }
     @Test
-    @Disabled("can't construct SpreadsheetDocument in test")
     void shouldPrintSpreadsheetDiagram() throws IOException {
-        PrintableDiagram diagram = new FakeDiagram("Spreadsheet", "SN002", new StringBuilder());
+        StringBuilder spy = new StringBuilder();
+        PrintableDiagram diagram = new FakeDiagram("Spreadsheet", "SN002", spy);
         boolean result = DiagramPrinter.printDiagram(diagram, "some/folder", "diagram.xls");
         assertTrue(result);
+        assertEquals("printing spreadsheet Spreadsheet_SN002", spy.toString());
     }
 
 
@@ -89,7 +89,12 @@ class DiagramPrinterTest {
         }
 
         public boolean printPdf(String fullFilename, String targetFilename) {
-            spy.append("printing ").append(fullFilename);
+            spy.append("printing pdf ").append(fullFilename);
+            return true;
+        }
+
+        public boolean printSpreadsheet(String fullFilename, String targetFilename) {
+            spy.append("printing spreadsheet ").append(fullFilename);
             return true;
         }
     }
