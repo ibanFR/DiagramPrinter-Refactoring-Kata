@@ -1,5 +1,6 @@
 package sammancoaching;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ class DiagramPrinterTest {
     void shouldPrintSummaryForValidDiagram(){
         DiagramPrinter printer = new DiagramPrinter();
         StringBuilder output = new StringBuilder();
-        PrintableDiagram diagram = new FakeDiagram();
+        PrintableDiagram diagram = new FakeDiagram("name");
         boolean result = printer.printSummary(diagram, "swedish", output);
         assertTrue(result);
     }
@@ -37,13 +38,20 @@ class DiagramPrinterTest {
 
     @Test
     void shouldPrintPDFDiagram() throws IOException {
-        PrintableDiagram diagram = new FakeDiagram();
+        PrintableDiagram diagram = new FakeDiagram("Flowchart");
         boolean result = DiagramPrinter.printDiagram(diagram, "some/folder", "diagram.pdf");
+        assertTrue(result);
+    }
+    @Test
+    @Disabled("can't construct SpreadsheetDocument in test")
+    void shouldPrintSpreadsheetDiagram() throws IOException {
+        PrintableDiagram diagram = new FakeDiagram("Spreadsheet");
+        boolean result = DiagramPrinter.printDiagram(diagram, "some/folder", "diagram.xls");
         assertTrue(result);
     }
 
 
-    private record FakeDiagram() implements PrintableDiagram {
+    private record FakeDiagram(String name) implements PrintableDiagram {
         @Override
         public FlowchartDiagram getDiagram() {
             return null;
@@ -76,7 +84,7 @@ class DiagramPrinterTest {
 
         @Override
         public String getName() {
-            return "FlowchartDiagram";
+            return name;
         }
 
         public boolean printPdf(String fullFilename, String targetFilename) {
