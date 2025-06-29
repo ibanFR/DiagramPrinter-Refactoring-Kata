@@ -37,9 +37,8 @@ class DiagramPrinterTest {
 
     @Test
     void shouldPrintPDFDiagram() throws IOException {
-        DiagramPrinter printer = new DiagramPrinter();
         PrintableDiagram diagram = new FakeDiagram();
-        boolean result = printer.printDiagram(diagram, "some/folder", "diagram.pdf");
+        boolean result = DiagramPrinter.printDiagram(diagram, "some/folder", "diagram.pdf");
         assertTrue(result);
     }
 
